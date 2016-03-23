@@ -12,7 +12,9 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/sleepinginsomniac/spacerace'
   s.files         = [
     "lib/spacerace.rb",
-    "bin/spacerace"
+    "bin/spacerace",
+    "README.md",
+    "LICENSE"
   ]
   s.executables   = ["spacerace"]
   s.require_paths = ["lib"]
