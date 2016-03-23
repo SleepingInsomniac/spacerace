@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require 'optparse'
+require_relative '../lib/spacerace.rb'
+
+TOOL_NAME = "spacerace"
+VERSION = SpaceRace::VERSION
+HOME_PAGE = ""
+USAGE = "Usage: #{TOOL_NAME} (FILES|GLOBS)... [options]"
+
+options = Hash.new
+OptionParser.new do |opts|
+  opts.banner = <<-BANNER
+    #{TOOL_NAME} version #{VERSION}
+    #{USAGE}
+    
+  BANNER
+
+  opts.on "-s SPACE", "--space SPACE", "Space character" do |o|
+    options[:space] = o
+  end
+  
+  opts.on "-r REPLACEMENT", "--replacement REPLACEMENT", "Replacement character" do |o|
+    options[:replacement] = o
+  end
+  
+  opts.on "-d AMOUNT", "--reduce AMOUNT", "Divide number of 'space characters' by this (useful for converting spaces to tabs)" do |o|
+    options[:reduce] = o
+  end
+
+  opts.on "--no-backup", "Do not create a backup of the original" do
+    options[:nobackup] = true
+  end
+
+  # ==================
+  # = Common Options =
+  # ==================
+
+  opts.separator ""
+  opts.separator "Common options:"
+
+  opts.on "-v", "--version", "Print version" do
+    puts "#{TOOL_NAME} - version #{VERSION}", HOME_PAGE
+    exit
+  end
+
+  opts.on "-h", "--help", "Prints this help" do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+if ARGV.empty?
+  puts USAGE
+  exit
+end
+
+puts ARGV
+
+replacer = SpaceRace.new(options)
+ARGV.each { |path| replacer.respace_file(path) }
