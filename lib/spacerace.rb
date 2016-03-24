@@ -1,7 +1,7 @@
 class SpaceRace
   require 'fileutils'
   
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   
   def initialize(options = {})
     @space       = options[:space]       || '\t'
@@ -14,8 +14,13 @@ class SpaceRace
   
   def respace_line(line)
     regex = /^#{@space}*/
-    amount = line.scan(regex).first.length
-    line.gsub(regex, padd((amount/@reduce).to_i, @replacement))
+    white_space = line.scan(regex).first
+    if (white_space)
+      amount = white_space.length
+      line.gsub(regex, padd((amount/@reduce).to_i, @replacement))
+    else
+      line
+    end
   end
 
   def respace_file(file)
@@ -25,7 +30,7 @@ class SpaceRace
     out_file = File.open file, "w"
 
     File.foreach original do |line|
-      out_file.write respace_line(line, @space, @replacement, @reduce)
+      out_file.write respace_line(line)
       # puts respace_line(line, @space, @replacement, @reduce)
     end
 
