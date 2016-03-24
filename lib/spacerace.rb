@@ -1,7 +1,7 @@
 class SpaceRace
   require 'fileutils'
   
-  VERSION = '0.0.2'
+  VERSION = '0.0.3'
   
   def initialize(options = {})
     @space       = options[:space]       || '\t'
@@ -17,7 +17,7 @@ class SpaceRace
     white_space = line.scan(regex).first
     if (white_space)
       amount = white_space.length
-      line.gsub(regex, padd((amount/@reduce).to_i, @replacement))
+      line.gsub(regex, padd((amount.to_i/@reduce.to_i).to_i, @replacement))
     else
       line
     end
